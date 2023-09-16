@@ -1,7 +1,8 @@
-package com.example.study.member;
+package com.example.study.member.dto;
 
 import com.example.study.member.domain.Member;
 import com.example.study.member.enums.Gender;
+import com.querydsl.core.annotations.QueryProjection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,13 @@ public class MemberDto {
     private String name;
     private Gender gender;
 
+    @QueryProjection
+    public MemberDto(Long memberId, String userId, String name, Gender gender) {
+        this.memberId = memberId;
+        this.userId = userId;
+        this.name = name;
+        this.gender = gender;
+    }
 
     @Default
     private List<MemberAuthorityDto> authorities = new ArrayList<>();

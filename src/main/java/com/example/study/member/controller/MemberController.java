@@ -1,9 +1,12 @@
 package com.example.study.member.controller;
 
-import com.example.study.member.LoginDto;
-import com.example.study.member.MemberDto;
+import com.example.study.member.dto.LoginDto;
+import com.example.study.member.dto.MemberDto;
+import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +35,8 @@ public class MemberController {
     }
 
     @GetMapping
-    public String helloMember() {
-        return "Hello Member";
+    public Page<MemberDto> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
+        return memberService.getAllMembers(condition, pageable);
     }
 
 }

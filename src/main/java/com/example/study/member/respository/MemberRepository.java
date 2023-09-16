@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
 @org.springframework.stereotype.Repository
-public interface MemberRepository extends Repository<Member, Long> {
+public interface MemberRepository extends Repository<Member, Long>, MemberRepositoryCustom {
     Optional<Member> findByUserId(String userID);
     Member save(Member member);
 }

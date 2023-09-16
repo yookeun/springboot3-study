@@ -1,4 +1,4 @@
-package com.example.study.member;
+package com.example.study.member.dto;
 
 import com.example.study.member.domain.Member;
 import com.example.study.member.domain.MemberAuthority;

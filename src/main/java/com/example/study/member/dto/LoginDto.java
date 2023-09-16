@@ -1,4 +1,4 @@
-package com.example.study.member;
+package com.example.study.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.example.study.member.domain;
 
 import com.example.study.common.BaseEntity;
-import com.example.study.member.MemberAuthorityDto;
+import com.example.study.member.dto.MemberAuthorityDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import jakarta.persistence.CascadeType;
