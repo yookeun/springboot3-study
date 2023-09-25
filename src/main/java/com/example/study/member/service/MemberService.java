@@ -24,6 +24,11 @@ public class MemberService {
 
     @Transactional
     public MemberDto save(MemberDto memberDto) {
+        Optional<Member> optionalMember = memberRepository.findByUserId(memberDto.getUserId());
+        if (optionalMember.isPresent()) {
+            throw new IllegalArgumentException("이미 사용 중인 userId 입니다");
+        }
+        
         Member saveMember = memberRepository.save(memberDto.toEntity());
         saveMember.addAuthorities(memberDto.getAuthorities());
         return MemberDto.fromEntity(saveMember);
