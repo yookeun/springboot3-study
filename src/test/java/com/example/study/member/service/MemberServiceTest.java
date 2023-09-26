@@ -2,8 +2,9 @@ package com.example.study.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.study.member.dto.MemberAuthorityDto;
+import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.dto.MemberDto;
+import com.example.study.member.dto.MemberDto.MemberRequestDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import java.util.List;
@@ -28,40 +29,21 @@ class MemberServiceTest {
     @Test
     void testSaveMember() {
         //given
-        MemberDto memberDto = MemberDto.builder()
+        MemberRequestDto memberDto = MemberRequestDto.builder()
                 .userId("hong")
                 .password("1234")
                 .gender(Gender.MALE)
                 .name("HONG")
                 .authorities(List.of(
-                        MemberAuthorityDto.builder().authority(Authority.ITEM).build(),
-                        MemberAuthorityDto.builder().authority(Authority.ORDER).build()))
+                        MemberAuthorityRequestDto.builder().authority(Authority.ITEM).build(),
+                        MemberAuthorityRequestDto.builder().authority(Authority.ORDER).build()))
                 .build();
 
         //when
         MemberDto savedMemberDto = memberService.save(memberDto);
 
         //then
-        assertThat(savedMemberDto.getMemberId()).isNotNull();
-    }
-
-    @Test
-    void testSaveMember100() {
-        for (int i = 0; i < 100; i++) {
-            //given
-            MemberDto memberDto = MemberDto.builder()
-                    .userId("hong_"+i)
-                    .password("1234")
-                    .gender(i % 2 == 0 ? Gender.MALE : Gender.FEMALE)
-                    .name("HONG"+i)
-                    .authorities(List.of(
-                            MemberAuthorityDto.builder().authority(Authority.ITEM).build(),
-                            MemberAuthorityDto.builder().authority(Authority.ORDER).build()))
-                    .build();
-
-            //when
-            MemberDto savedMemberDto = memberService.save(memberDto);
-        }
+        assertThat(savedMemberDto.getId()).isNotNull();
     }
 
 }

@@ -16,22 +16,36 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberAuthorityDto {
-    private Long userAuthorityId;
+    private Long id;
     private Authority authority;
     @JsonIgnore
     private Member member;
 
-    public MemberAuthority toEntity() {
-        return MemberAuthority.builder()
-                .authority(authority)
-                .member(member)
-                .build();
-    }
+
 
     public static MemberAuthorityDto fromEntity(MemberAuthority memberAuthority) {
         return MemberAuthorityDto.builder()
-                .userAuthorityId(memberAuthority.getUserAuthorityId())
+                .id(memberAuthority.getId())
                 .authority(memberAuthority.getAuthority())
                 .build();
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberAuthorityRequestDto {
+
+        private Authority authority;
+        @JsonIgnore
+        private Member member;
+
+        public MemberAuthority toEntity() {
+            return MemberAuthority.builder()
+                    .authority(authority)
+                    .member(member)
+                    .build();
+        }
     }
 }

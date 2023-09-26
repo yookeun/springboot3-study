@@ -1,6 +1,7 @@
 package com.example.study.member.dto;
 
 import com.example.study.member.domain.Member;
+import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.enums.Gender;
 import com.querydsl.core.annotations.QueryProjection;
 import java.util.ArrayList;
@@ -37,15 +38,7 @@ public class MemberDto {
     @Default
     private List<MemberAuthorityDto> authorities = new ArrayList<>();
 
-    public Member toEntity() {
-        return Member.builder()
-                .id(id)
-                .userId(userId)
-                .password(password)
-                .name(name)
-                .gender(gender)
-                .build();
-    }
+
 
     public static MemberDto fromEntity(Member member) {
         return MemberDto.builder()
@@ -63,6 +56,32 @@ public class MemberDto {
                 .map(MemberAuthorityDto::fromEntity)
                 .collect(Collectors.toList());
 
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberRequestDto {
+
+
+        private String userId;
+        private String password;
+        private String name;
+        private Gender gender;
+
+        @Default
+        private List<MemberAuthorityRequestDto> authorities = new ArrayList<>();
+
+        public Member toEntity() {
+            return Member.builder()
+                    .userId(userId)
+                    .password(password)
+                    .name(name)
+                    .gender(gender)
+                    .build();
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.study.member.domain;
 
 import com.example.study.common.BaseEntity;
-import com.example.study.member.dto.MemberAuthorityDto;
+import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import jakarta.persistence.CascadeType;
@@ -56,10 +56,10 @@ public class Member extends BaseEntity {
             fetch = FetchType.LAZY)
     private List<MemberAuthority> memberAuthorityList = new ArrayList<>();
 
-    public void addAuthorities(List<MemberAuthorityDto> memberAuthorityDtoList) {
-        memberAuthorityDtoList.forEach(memberAuthorityDto -> {
-            memberAuthorityDto.setMember(this);
-            memberAuthorityList.add(memberAuthorityDto.toEntity());
+    public void addAuthorities(List<MemberAuthorityRequestDto> memberAuthorityDtoList) {
+        memberAuthorityDtoList.forEach(memberAuthorityRequestDto -> {
+            memberAuthorityRequestDto.setMember(this);
+            memberAuthorityList.add(memberAuthorityRequestDto.toEntity());
         });
     }
 

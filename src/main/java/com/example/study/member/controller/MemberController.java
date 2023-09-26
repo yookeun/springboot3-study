@@ -30,7 +30,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ITEM')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<MemberDto> getMember(@PathVariable("id") Long id) {
         return ResponseEntity.ok(memberService.getMember(id));
     }

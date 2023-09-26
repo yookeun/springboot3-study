@@ -1,7 +1,9 @@
-package com.example.study.member.domain;
+package com.example.study.order.domain;
 
 import com.example.study.common.BaseEntity;
-import com.example.study.member.enums.Authority;
+import com.example.study.item.domain.Item;
+import com.example.study.member.domain.Member;
+import com.example.study.member.enums.OrderStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,28 +17,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Table(name = "MEMBER_AUTHORITY")
-public class MemberAuthority extends BaseEntity {
-
+@Table(name = "ORDER")
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MEMBER_AUTHORITY_ID")
+    @Column(name = "ORDER_ID")
     private Long id;
-
-    @Column(name = "AUTHORITY", columnDefinition = "varchar(20) not null")
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ITEM_ID")
+    private Item item;
+
+    @Column(name = "ORDER_COUNT")
+    private Integer orderCount;
+
+    @Column(name = "ORDER_STATUS")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 }

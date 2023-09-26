@@ -22,12 +22,12 @@ public class ErrorResponse {
 
     public static void exceptionCall(HttpStatus httpStatus, HttpServletResponse response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        response.setStatus(httpStatus.value());
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(ErrorResponse.builder()
                 .code(httpStatus.value())
                 .msg(httpStatus.name())
                 .build()));
-        response.setStatus(httpStatus.value());
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json");
     }
 }

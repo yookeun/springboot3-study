@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class JwtTokenHandler {
+
     @Value("${jwt.secret-key}")
     private String jwtSecretKey;
 

@@ -2,6 +2,7 @@ package com.example.study.member.controller;
 
 import com.example.study.member.dto.LoginDto;
 import com.example.study.member.dto.MemberDto;
+import com.example.study.member.dto.MemberDto.MemberRequestDto;
 import com.example.study.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<MemberDto> create(@RequestBody MemberDto memberDto) {
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        return ResponseEntity.ok(memberService.save(memberDto));
+    public ResponseEntity<MemberDto> create(@RequestBody MemberRequestDto requestDto) {
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        return ResponseEntity.ok(memberService.save(requestDto));
     }
 
     @PostMapping("/login")

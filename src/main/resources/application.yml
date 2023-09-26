@@ -1,3 +1,5 @@
+server:
+  port: 9090
 spring:
   config:
     activate:
@@ -5,18 +7,23 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/STUDY?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:16691/STUDY?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
     username: root
-    password: 1234
+    password: test
     hikari:
       max-lifetime: 30000
+      maximum-pool-size: 10
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-      show_sql: true
-      format_sql: true
+        default_batch_fetch_size: 1000
+        show_sql: true
+        format_sql: true
 
 logging.level:
   org.hibernate.SQL: debug
