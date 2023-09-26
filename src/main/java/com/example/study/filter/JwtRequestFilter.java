@@ -1,18 +1,18 @@
 package com.example.study.filter;
 
 import com.example.study.config.UserDetailService;
+import com.example.study.exception.ErrorResponse;
 import com.example.study.handler.JwtTokenHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,15 +29,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final UserDetailService  userDetailService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String[] excludePath = {"/member"};
+        String path = request.getRequestURI();
+        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-
-        String path = request.getRequestURI();
-        //This filter does not apply to the paths below.
-        if (path.startsWith("/member")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         final String authorizationHeader = request.getHeader("Authorization");
         String username;
@@ -50,8 +50,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         username = jwtTokenHandler.extractUsername(token);
+
         if (username == null) {
-            exceptionCall(response);
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response);
             return;
         }
 
@@ -65,15 +66,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private void exceptionCall(HttpServletResponse response) throws IOException {
-        Map<String, String> map = new HashMap<>();
-        map.put("error", "INVALID TOKEN");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.getWriter().write(objectMapper.writeValueAsString(map));
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json");
     }
 }

@@ -20,15 +20,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MemberDto {
 
-    private Long memberId;
+    private Long id;
     private String userId;
     private String password;
     private String name;
     private Gender gender;
 
     @QueryProjection
-    public MemberDto(Long memberId, String userId, String name, Gender gender) {
-        this.memberId = memberId;
+    public MemberDto(Long id, String userId, String name, Gender gender) {
+        this.id = id;
         this.userId = userId;
         this.name = name;
         this.gender = gender;
@@ -39,7 +39,7 @@ public class MemberDto {
 
     public Member toEntity() {
         return Member.builder()
-                .memberId(memberId)
+                .id(id)
                 .userId(userId)
                 .password(password)
                 .name(name)
@@ -49,7 +49,7 @@ public class MemberDto {
 
     public static MemberDto fromEntity(Member member) {
         return MemberDto.builder()
-                .memberId(member.getMemberId())
+                .id(member.getId())
                 .userId(member.getUserId())
                 .password(member.getPassword())
                 .name(member.getName())

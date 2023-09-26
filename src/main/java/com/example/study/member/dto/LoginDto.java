@@ -21,6 +21,4 @@ public class LoginDto {
     private String password;
 
     private String accessToken;
-    private Boolean result;
-    private String msg;
 }

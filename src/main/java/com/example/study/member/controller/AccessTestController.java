@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccessTestController {
 
     @GetMapping("/item")
-    @PreAuthorize("hasAuthority('ITEM')")
+    @PreAuthorize("hasAuthority('ITEM2')")
     public String accessItem() {
         return "Hello Item";
     }

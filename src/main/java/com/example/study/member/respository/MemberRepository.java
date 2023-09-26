@@ -8,4 +8,7 @@ import org.springframework.data.repository.Repository;
 public interface MemberRepository extends Repository<Member, Long>, MemberRepositoryCustom {
     Optional<Member> findByUserId(String userID);
     Member save(Member member);
+
+    Optional<Member> findById(Long id);
+
 }

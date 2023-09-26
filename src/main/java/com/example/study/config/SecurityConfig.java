@@ -29,16 +29,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.httpBasic(HttpBasicConfigurer::disable)
+                .exceptionHandling(authenticationManager ->
+                        authenticationManager
+                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                                .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .authenticationProvider(authenticationProvider())
                 .csrf(CsrfConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/member/**").permitAll()
-                                .requestMatchers("/api/**").permitAll()
+                        request ->
+                                request.requestMatchers("/member/**").permitAll()
                                 .anyRequest().authenticated()
-                ).addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return  http.build();
     }
 

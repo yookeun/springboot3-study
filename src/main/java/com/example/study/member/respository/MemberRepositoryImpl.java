@@ -26,7 +26,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         List<MemberDto> result = queryFactory
                 .select(new QMemberDto(
-                        member.memberId,
+                        member.id,
                         member.userId,
                         member.name,
                         member.gender

@@ -32,8 +32,8 @@ public class MemberAuthority extends BaseEntity {
     @Column(name = "MEMBER_AUTHORITY_ID")
     private Long userAuthorityId;
 
-    @Column(name = "AUTHORITY", nullable = false, length = 20)
-    @Enumerated(value = EnumType.STRING)
+    @Column(name = "AUTHORITY", columnDefinition = "varchar(20) not null")
+    @Enumerated(EnumType.STRING)
     private Authority authority;
 
     @ManyToOne(fetch = FetchType.LAZY)

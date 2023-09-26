@@ -38,18 +38,20 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByUserId(loginDto.getUserId());
         if (optionalMember.isEmpty() || !isMatchPassword(loginDto.getPassword(),
                 optionalMember.get().getPassword())) {
-            loginDto.setResult(false);
-            loginDto.setMsg("ID and password do not match");
-            return loginDto;
+            throw new IllegalArgumentException("아이디 혹은 패스워드가 잘못되었습니다.");
         }
         loginDto.setAccessToken(jwtTokenHandler.generateToken(optionalMember.get()));
-        loginDto.setResult(true);
-        loginDto.setMsg("SUCCESS");
         return loginDto;
     }
 
     public Page<MemberDto> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
         return memberRepository.getAllMembers(condition, pageable);
+    }
+
+    public MemberDto getMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."));
+        return MemberDto.fromEntity(member);
     }
 
 
