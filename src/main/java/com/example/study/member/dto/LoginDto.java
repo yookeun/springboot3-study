@@ -14,11 +14,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginDto {
 
-    @NotBlank(message = "ID is required.")
     private String userId;
-
-    @NotBlank(message = "PASSWORD is required.")
+    private String name;
     private String password;
-
     private String accessToken;
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginRequestDto {
+
+        @NotBlank(message = "ID is required.")
+        private String userId;
+
+        @NotBlank(message = "PASSWORD is required.")
+        private String password;
+    }
 }

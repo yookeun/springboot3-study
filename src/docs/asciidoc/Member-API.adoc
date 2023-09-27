@@ -1,0 +1,45 @@
+== Member-API
+
+=== Save-Member
+
+==== Request Sample
+include::{snippets}/save-member/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/save-member/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/save-member/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/save-member/response-fields.adoc[]
+
+
+=== Login-Member
+
+==== Request Sample
+include::{snippets}/login-member/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/login-member/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/login-member/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/login-member/response-fields.adoc[]
+
+
+=== List-Member
+
+==== Request Sample
+include::{snippets}/list-member/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/list-member/query-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/list-member/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/list-member/response-fields.adoc[]

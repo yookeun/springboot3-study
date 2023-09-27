@@ -1,9 +1,11 @@
 package com.example.study.member.controller;
 
 import com.example.study.member.dto.LoginDto;
+import com.example.study.member.dto.LoginDto.LoginRequestDto;
 import com.example.study.member.dto.MemberDto;
 import com.example.study.member.dto.MemberDto.MemberRequestDto;
 import com.example.study.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,8 +29,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto) {
-        return ResponseEntity.ok(memberService.loginProcess(loginDto));
+    public ResponseEntity<LoginDto> login(@Valid  @RequestBody LoginRequestDto requestDto) {
+        return ResponseEntity.ok(memberService.loginProcess(requestDto));
     }
 
 }

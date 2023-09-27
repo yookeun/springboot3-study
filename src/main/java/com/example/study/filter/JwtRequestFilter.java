@@ -7,7 +7,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         String username;
         String token = null;
-        HttpSession session = request.getSession();
+        //HttpSession session = request.getSession();
 
         //Parse the token attached below the Bearer part of the Header.
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -62,7 +61,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            session.setAttribute("userId", username);
+            //session.setAttribute("userId", username);
         }
 
         filterChain.doFilter(request, response);

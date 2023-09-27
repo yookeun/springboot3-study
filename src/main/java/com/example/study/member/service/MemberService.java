@@ -3,6 +3,7 @@ package com.example.study.member.service;
 import com.example.study.handler.JwtTokenHandler;
 import com.example.study.member.domain.Member;
 import com.example.study.member.dto.LoginDto;
+import com.example.study.member.dto.LoginDto.LoginRequestDto;
 import com.example.study.member.dto.MemberDto;
 import com.example.study.member.dto.MemberDto.MemberRequestDto;
 import com.example.study.member.dto.MemberSearchCondition;
@@ -35,14 +36,18 @@ public class MemberService {
         return MemberDto.fromEntity(saveMember);
     }
 
-    public LoginDto loginProcess(LoginDto loginDto) {
-        Optional<Member> optionalMember = memberRepository.findByUserId(loginDto.getUserId());
-        if (optionalMember.isEmpty() || !isMatchPassword(loginDto.getPassword(),
+    public LoginDto loginProcess(LoginRequestDto requestDto) {
+        Optional<Member> optionalMember = memberRepository.findByUserId(requestDto.getUserId());
+        if (optionalMember.isEmpty() || !isMatchPassword(requestDto.getPassword(),
                 optionalMember.get().getPassword())) {
             throw new IllegalArgumentException("아이디 혹은 패스워드가 잘못되었습니다.");
         }
-        loginDto.setAccessToken(jwtTokenHandler.generateToken(optionalMember.get()));
-        return loginDto;
+        return LoginDto.builder()
+                .userId(optionalMember.get().getUserId())
+                .password(optionalMember.get().getPassword())
+                .name(optionalMember.get().getName())
+                .accessToken(jwtTokenHandler.generateToken(optionalMember.get()))
+                .build();
     }
 
     public Page<MemberDto> getAllMembers(MemberSearchCondition condition, Pageable pageable) {

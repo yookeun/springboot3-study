@@ -23,9 +23,9 @@ public class MemberDto {
 
     private Long id;
     private String userId;
-    private String password;
     private String name;
     private Gender gender;
+    private List<MemberAuthorityDto> authorities;
 
     @QueryProjection
     public MemberDto(Long id, String userId, String name, Gender gender) {
@@ -35,16 +35,11 @@ public class MemberDto {
         this.gender = gender;
     }
 
-    @Default
-    private List<MemberAuthorityDto> authorities = new ArrayList<>();
-
-
 
     public static MemberDto fromEntity(Member member) {
         return MemberDto.builder()
                 .id(member.getId())
                 .userId(member.getUserId())
-                .password(member.getPassword())
                 .name(member.getName())
                 .gender(member.getGender())
                 .authorities(getAuthorities(member))
