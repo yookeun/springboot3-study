@@ -11,12 +11,12 @@ import org.springframework.restdocs.request.ParameterDescriptor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PageDescriptor {
 
-    public static final ParameterDescriptor[] pageRequestFieldDescriptors = {
+    public static final ParameterDescriptor[] requestDescriptor = {
             parameterWithName("page").description("Page number").optional(),
             parameterWithName("size").description("Page size").optional()
     };
 
-    public static final FieldDescriptor[] pageResponseFieldDescriptors = {
+    public static final FieldDescriptor[] responseDescriptor = {
             fieldWithPath("pageable.sort.empty").ignored(),
             fieldWithPath("pageable.sort.unsorted").ignored(),
             fieldWithPath("pageable.sort.sorted").ignored(),

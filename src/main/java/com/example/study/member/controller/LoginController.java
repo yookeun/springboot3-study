@@ -23,7 +23,7 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<MemberDto> create(@RequestBody MemberRequestDto requestDto) {
+    public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberRequestDto requestDto) {
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         return ResponseEntity.ok(memberService.save(requestDto));
     }

@@ -43,3 +43,18 @@ include::{snippets}/list-member/http-response.adoc[]
 
 ==== Response Fields
 include::{snippets}/list-member/response-fields.adoc[]
+
+
+=== Get-Member
+
+==== Request Sample
+include::{snippets}/get-member/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/get-member/path-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/get-member/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/get-member/response-fields.adoc[]

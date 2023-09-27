@@ -3,7 +3,8 @@ package com.example.study.member.dto;
 import com.example.study.member.domain.Member;
 import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.enums.Gender;
-import com.querydsl.core.annotations.QueryProjection;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,15 +28,6 @@ public class MemberDto {
     private Gender gender;
     private List<MemberAuthorityDto> authorities;
 
-    @QueryProjection
-    public MemberDto(Long id, String userId, String name, Gender gender) {
-        this.id = id;
-        this.userId = userId;
-        this.name = name;
-        this.gender = gender;
-    }
-
-
     public static MemberDto fromEntity(Member member) {
         return MemberDto.builder()
                 .id(member.getId())
@@ -53,6 +45,7 @@ public class MemberDto {
 
     }
 
+
     @Getter
     @Setter
     @Builder
@@ -61,9 +54,16 @@ public class MemberDto {
     public static class MemberRequestDto {
 
 
+        @NotBlank(message = "required")
         private String userId;
+
+        @NotBlank(message = "required")
         private String password;
+
+        @NotBlank(message = "required")
         private String name;
+
+        @NotNull(message = "required")
         private Gender gender;
 
         @Default
@@ -77,6 +77,28 @@ public class MemberDto {
                     .gender(gender)
                     .build();
         }
+    }
+
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberUpdateDto {
+
+        @NotBlank(message = "required")
+        private String password;
+
+        @NotBlank(message = "required")
+        private String name;
+
+        @NotNull(message = "required")
+        private Gender gender;
+
+        @Default
+        private List<MemberAuthorityRequestDto> authorities = new ArrayList<>();
+
     }
 
 }

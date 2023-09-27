@@ -6,6 +6,7 @@ import com.example.study.member.dto.LoginDto;
 import com.example.study.member.dto.LoginDto.LoginRequestDto;
 import com.example.study.member.dto.MemberDto;
 import com.example.study.member.dto.MemberDto.MemberRequestDto;
+import com.example.study.member.dto.MemberDto.MemberUpdateDto;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.respository.MemberRepository;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class MemberService {
     public MemberDto save(MemberRequestDto requestDto) {
         Optional<Member> optionalMember = memberRepository.findByUserId(requestDto.getUserId());
         if (optionalMember.isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 userId 입니다");
+            throw new IllegalArgumentException("This userId is already in use.");
         }
         
         Member saveMember = memberRepository.save(requestDto.toEntity());
@@ -40,7 +41,7 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByUserId(requestDto.getUserId());
         if (optionalMember.isEmpty() || !isMatchPassword(requestDto.getPassword(),
                 optionalMember.get().getPassword())) {
-            throw new IllegalArgumentException("아이디 혹은 패스워드가 잘못되었습니다.");
+            throw new IllegalArgumentException("The ID or password is incorrect.");
         }
         return LoginDto.builder()
                 .userId(optionalMember.get().getUserId())
@@ -51,12 +52,24 @@ public class MemberService {
     }
 
     public Page<MemberDto> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
-        return memberRepository.getAllMembers(condition, pageable);
+        return memberRepository.getAllMembers(condition, pageable).map(MemberDto::fromEntity);
     }
 
     public MemberDto getMember(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("This ID does not exist."));
+        return MemberDto.fromEntity(member);
+    }
+
+    @Transactional
+    public MemberDto updateMember(Long id, MemberUpdateDto requestDto) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("This ID does not exist."));
+
+        member.updateName(requestDto.getName());
+        member.updateGender(requestDto.getGender());
+        member.updatePassword(passwordEncoder.encode(requestDto.getPassword()));
+        member.updateAuthorities(requestDto.getAuthorities());
         return MemberDto.fromEntity(member);
     }
 

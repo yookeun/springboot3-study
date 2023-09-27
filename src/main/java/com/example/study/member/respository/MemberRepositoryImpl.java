@@ -2,9 +2,8 @@ package com.example.study.member.respository;
 
 import static com.example.study.member.domain.QMember.member;
 
-import com.example.study.member.dto.MemberDto;
+import com.example.study.member.domain.Member;
 import com.example.study.member.dto.MemberSearchCondition;
-import com.example.study.member.dto.QMemberDto;
 import com.example.study.member.enums.Gender;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
@@ -22,15 +21,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<MemberDto> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
+    public Page<Member> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
 
-        List<MemberDto> result = queryFactory
-                .select(new QMemberDto(
-                        member.id,
-                        member.userId,
-                        member.name,
-                        member.gender
-                ))
+        List<Member> result = queryFactory
+                .select(member)
                 .from(member)
                 .where(
                         containsSearchName(condition.getSearchName()),

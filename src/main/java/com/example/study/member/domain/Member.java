@@ -67,4 +67,20 @@ public class Member extends BaseEntity {
         return memberAuthorityList.stream()
                 .map(MemberAuthority::getAuthority).collect(Collectors.toList());
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+    public void updateGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void updatePassword(String encryptedPassword) {
+        this.password = encryptedPassword;
+    }
+
+    public void updateAuthorities(List<MemberAuthorityRequestDto> memberAuthorityRequestDtoList) {
+        this.memberAuthorityList.clear();
+        addAuthorities(memberAuthorityRequestDtoList);
+    }
 }

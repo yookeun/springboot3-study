@@ -2,12 +2,14 @@ package com.example.study.member.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,15 +18,19 @@ import com.example.study.common.PageDescriptor;
 import com.example.study.handler.JwtTokenHandler;
 import com.example.study.member.domain.Member;
 import com.example.study.member.domain.MemberAuthority;
+import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
+import com.example.study.member.dto.MemberDto.MemberUpdateDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import com.example.study.member.respository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,6 +67,15 @@ class MemberControllerTest {
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
 
+    private final String contextPath;
+    private final String prefixUrl;
+
+
+    public MemberControllerTest(@Value("${server.servlet.context-path}") String contextPath) {
+        this.contextPath = contextPath;
+        this.prefixUrl = contextPath + "/api/member";
+    }
+
     @DisplayName("Get all member")
     @Test
     void testGetAllMember() throws Exception {
@@ -71,12 +86,12 @@ class MemberControllerTest {
         Gender gender = Gender.MALE;
 
         //when
-        ResultActions result = mockMvc.perform(get("/api/member"
+        ResultActions result = mockMvc.perform(get(prefixUrl
                 + "?page={page}"
                 + "&size={size}"
                 + "&searchName={searchName}"
                 + "&gender={gender}", page, size, searchName, gender)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
         );
 
@@ -89,23 +104,85 @@ class MemberControllerTest {
         result.andDo(document("list-member",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                queryParameters(PageDescriptor.pageRequestFieldDescriptors)
+                queryParameters(PageDescriptor.requestDescriptor)
                         .and(
                             parameterWithName("page").description("Page number").optional(),
                             parameterWithName("size").description("Page limit size").optional(),
                             parameterWithName("searchName").description("USER ID"),
                             parameterWithName("gender").description("[FEMALE] or [MALE]")
                         ),
-                responseFields(PageDescriptor.pageResponseFieldDescriptors)
+                responseFields(PageDescriptor.responseDescriptor)
                         .and(fieldWithPath("content").description("CONTENT"))
                         .andWithPrefix("content[].",
                             fieldWithPath("id").description("ID"),
                             fieldWithPath("userId").description("USER ID"),
                             fieldWithPath("name").description("USER NAME"),
                             fieldWithPath("gender").description("USER GENDER"),
-                            fieldWithPath("authorities").description("[ADMIN, ITEM, ORDER]")
+                            fieldWithPath("authorities[].id").description("ID"),
+                            fieldWithPath("authorities[].authority").description("[ADMIN, ITEM, ORDER]")
                         )
         ));
+    }
+
+    @DisplayName("Get one member")
+    @Test
+    void testViewMember() throws Exception {
+        //given
+
+        //when
+        ResultActions result = mockMvc.perform(get(prefixUrl+"/{id}", memberId)
+                .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("test2"))
+                .andReturn();
+
+        //docs
+        result.andDo(document("get-member",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("id").description("MEMBER ID")),
+                responseFields(
+                        fieldWithPath("id").description("ID"),
+                        fieldWithPath("userId").description("USER ID"),
+                        fieldWithPath("name").description("USER NAME"),
+                        fieldWithPath("gender").description("USER GENDER"),
+                        fieldWithPath("authorities[].id").description("ID"),
+                        fieldWithPath("authorities[].authority").description("[ADMIN, ITEM, ORDER]")
+                )
+        ));
+    }
+
+    @DisplayName("Update member")
+    @Test
+    void testUpdateMember() throws Exception {
+        //given
+        MemberAuthorityRequestDto memberAuthorityRequestDto = MemberAuthorityRequestDto.builder()
+                .authority(Authority.ADMIN)
+                .build();
+
+        MemberUpdateDto memberUpdateDto = MemberUpdateDto.builder()
+                .name("test3")
+                .password("1234")
+                .gender(Gender.MALE)
+                .authorities(new ArrayList<>())
+                .build();
+
+
+        //when
+        ResultActions result = mockMvc.perform(patch(prefixUrl+"/{id}", memberId)
+                .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
+                .content(objectMapper.writeValueAsString(memberUpdateDto))
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("test3"))
+                .andReturn();
     }
 
 

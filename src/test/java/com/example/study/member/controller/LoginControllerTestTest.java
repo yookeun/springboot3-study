@@ -24,6 +24,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +53,15 @@ class LoginControllerTestTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final String contextPath;
+    private final String prefixUrl;
+
     private Long memberId;
+
+    public LoginControllerTestTest(@Value("${server.servlet.context-path}") String contextPath) {
+        this.contextPath = contextPath;
+        this.prefixUrl = contextPath + "/member";
+    }
 
     @DisplayName("Save member")
     @Test
@@ -71,7 +80,7 @@ class LoginControllerTestTest {
                 .build();
         //when
         ResultActions result = mockMvc.perform(post("/member")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(memberRequestDto)));
 
         //then
@@ -115,7 +124,7 @@ class LoginControllerTestTest {
 
         //when
         ResultActions result = mockMvc.perform(post("/member/login")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequestDto)));
 
         //.content(objectMapper.registerModule(new JavaTimeModule()).writeValueAsString(loginRequestDto)));
