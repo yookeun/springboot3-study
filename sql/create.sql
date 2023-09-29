@@ -8,13 +8,14 @@ DROP TABLE `ORDER`;
 
 CREATE TABLE `MEMBER` (
                           `MEMBER_ID` bigint NOT NULL AUTO_INCREMENT,
-                          `USER_ID` varchar(20) NOT NULL,
+                          `USER_ID` varchar(20) NOT NULL ,
                           `PASSWORD` varchar(100) NOT NULL,
                           `GENDER`varchar(20) NOT NULL,
                           `NAME` varchar(20)  NOT NULL,
                           `CREATE_DATE` datetime DEFAULT NULL,
                           `UPDATE_DATE` datetime DEFAULT NULL,
-                          PRIMARY KEY (`MEMBER_ID`)
+                          PRIMARY KEY (`MEMBER_ID`),
+                          UNIQUE KEY `USER_ID` (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
