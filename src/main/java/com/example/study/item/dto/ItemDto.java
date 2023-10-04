@@ -2,6 +2,8 @@ package com.example.study.item.dto;
 
 import com.example.study.item.domain.Item;
 import com.example.study.member.enums.ItemType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,11 +33,31 @@ public class ItemDto {
                 .build();
     }
 
-    public Item toEntity() {
-        return Item.builder()
-                .itemName(itemName)
-                .price(price)
-                .itemType(itemType)
-                .build();
+
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class ItemRequestDto {
+
+        @NotBlank(message = "required")
+        private String itemName;
+
+        @NotNull(message = "required")
+        private Long price;
+
+        @NotNull(message = "required")
+        private ItemType itemType;
+
+        public Item toEntity() {
+            return Item.builder()
+                    .itemName(itemName)
+                    .price(price)
+                    .itemType(itemType)
+                    .build();
+        }
     }
 }

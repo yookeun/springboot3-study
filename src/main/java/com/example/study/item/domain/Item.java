@@ -39,5 +39,17 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
+    public void updateItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void updatePrice(Long price) {
+        this.price = price;
+    }
+
+    public void updateItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
 
 }

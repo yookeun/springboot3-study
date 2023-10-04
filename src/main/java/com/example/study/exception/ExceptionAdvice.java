@@ -46,6 +46,7 @@ public class ExceptionAdvice {
         log.error(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         StringBuilder stringBuilder = new StringBuilder();
+
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             stringBuilder.append("[");
             stringBuilder.append(fieldError.getField());
