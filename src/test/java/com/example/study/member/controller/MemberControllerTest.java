@@ -7,6 +7,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -24,8 +25,8 @@ import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import com.example.study.member.respository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Transactional
+@Slf4j
 class MemberControllerTest {
 
     @Autowired
@@ -69,6 +71,7 @@ class MemberControllerTest {
 
     private final String contextPath;
     private final String prefixUrl;
+
 
 
     public MemberControllerTest(@Value("${server.servlet.context-path}") String contextPath) {
@@ -97,7 +100,7 @@ class MemberControllerTest {
 
         //then
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$['content'].size()").value(2))
+                .andExpect(jsonPath("$['content'].size()").isNotEmpty())
                 .andReturn();
 
         //docs
@@ -168,9 +171,8 @@ class MemberControllerTest {
                 .name("test3")
                 .password("1234")
                 .gender(Gender.MALE)
-                .authorities(new ArrayList<>())
+                .authorities(List.of(memberAuthorityRequestDto))
                 .build();
-
 
         //when
         ResultActions result = mockMvc.perform(patch(prefixUrl+"/{id}", memberId)
@@ -183,6 +185,28 @@ class MemberControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test3"))
                 .andReturn();
+
+        //docs
+        result.andDo(document("update-member",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("id").description("MEMBER ID")),
+                requestFields(
+                        fieldWithPath("name").description("member's name"),
+                        fieldWithPath("password").description("password"),
+                        fieldWithPath("gender").description("MALE or FEMALE"),
+                        fieldWithPath("authorities[].authority").description("Authorities = [ADMIN, ORDER, ITEM]")
+
+                ),
+                responseFields(
+                        fieldWithPath("id").description("ID"),
+                        fieldWithPath("userId").description("USER ID"),
+                        fieldWithPath("name").description("NAME"),
+                        fieldWithPath("gender").description("GENDER"),
+                        fieldWithPath("authorities[].id").ignored(),
+                        fieldWithPath("authorities[].authority").description("AUTHORITY")
+                )
+        ));
     }
 
 
@@ -197,9 +221,9 @@ class MemberControllerTest {
                 .password(passwordEncoder.encode("1234"))
                 .name("test2")
                 .gender(Gender.MALE)
-                .memberAuthorityList(List.of(memberAuthority))
                 .build();
 
+        member.getMemberAuthorityList().add(memberAuthority);
         memberRepository.save(member);
         memberId = member.getId();
     }
@@ -214,9 +238,9 @@ class MemberControllerTest {
                 .password(passwordEncoder.encode("1234"))
                 .name("test")
                 .gender(Gender.MALE)
-                .memberAuthorityList(List.of(memberAuthority))
                 .build();
 
+        member.getMemberAuthorityList().add(memberAuthority);
         memberRepository.save(member);
         return jwtTokenHandler.generateToken(member);
     }

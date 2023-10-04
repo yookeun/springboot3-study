@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +70,9 @@ public class MemberService {
         member.updateName(requestDto.getName());
         member.updateGender(requestDto.getGender());
         member.updatePassword(passwordEncoder.encode(requestDto.getPassword()));
-        member.updateAuthorities(requestDto.getAuthorities());
+        if (!CollectionUtils.isEmpty(requestDto.getAuthorities())) {
+            member.updateAuthorities(requestDto.getAuthorities());
+        }
         return MemberDto.fromEntity(member);
     }
 

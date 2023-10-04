@@ -58,3 +58,18 @@ include::{snippets}/get-member/http-response.adoc[]
 
 ==== Response Fields
 include::{snippets}/get-member/response-fields.adoc[]
+
+
+=== Update-Member
+
+==== Request Sample
+include::{snippets}/update-member/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/update-member/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/update-member/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/update-member/response-fields.adoc[]
