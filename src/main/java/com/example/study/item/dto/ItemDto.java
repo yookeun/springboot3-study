@@ -33,8 +33,6 @@ public class ItemDto {
                 .build();
     }
 
-
-
     @Getter
     @Setter
     @NoArgsConstructor

@@ -51,7 +51,10 @@ public class OrderDto {
     @Builder
     public static class OrderRequestDto {
 
+        @NotNull(message = "required")
         private Long memberId;
+
+        @NotNull(message = "required")
         private Long itemId;
 
         @JsonIgnore

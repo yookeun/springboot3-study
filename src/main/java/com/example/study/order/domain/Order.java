@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "ORDERS")
 public class Order extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID")
@@ -67,6 +68,4 @@ public class Order extends BaseEntity {
     public void updateOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
-
-
 }

@@ -42,7 +42,8 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ItemDto> updateItem(@PathVariable("id") Long id, @RequestBody @Valid ItemRequestDto requestDto) {
+    public ResponseEntity<ItemDto> updateItem(@PathVariable("id") Long id,
+            @RequestBody @Valid ItemRequestDto requestDto) {
         return ResponseEntity.ok(itemService.updateItem(id, requestDto));
     }
 }

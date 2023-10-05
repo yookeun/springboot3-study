@@ -51,5 +51,4 @@ public class Item extends BaseEntity {
         this.itemType = itemType;
     }
 
-
 }

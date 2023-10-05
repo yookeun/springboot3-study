@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +32,8 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     public Page<Order> getAllOrders(OrderSearchCondition condition, Pageable pageable) {
         Predicate[] where = {
                 containsMultiSearchName(condition.getSearchName()),
-                inOrderStatus(condition.getOrderStatus())
+                inOrderStatus(condition.getOrderStatus()),
+                betweenOrderDate(condition.getStartDate(), condition.getEndDate())
         };
 
         List<Order> result = queryFactory.select(order)
@@ -70,6 +72,14 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         List<OrderStatus> orderStatusList = new ArrayList<>();
         Arrays.stream(orderStatues).forEach(c -> orderStatusList.add(OrderStatus.valueOf(c.trim())));
         return order.orderStatus.in(orderStatusList);
+    }
+
+    private BooleanExpression betweenOrderDate(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+        //if localDateTime ->  .plusDays(1)
+        return order.orderDate.between(startDate, endDate);
     }
 
 }
