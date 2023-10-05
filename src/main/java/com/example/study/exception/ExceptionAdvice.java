@@ -43,7 +43,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage());
+        log.warn(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         StringBuilder stringBuilder = new StringBuilder();
 

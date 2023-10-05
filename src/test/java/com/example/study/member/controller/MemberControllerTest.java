@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.study.common.PageDescriptor;
-import com.example.study.handler.JwtTokenHandler;
+import com.example.study.common.TestToken;
 import com.example.study.member.domain.Member;
 import com.example.study.member.domain.MemberAuthority;
 import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
@@ -59,24 +59,24 @@ class MemberControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtTokenHandler jwtTokenHandler;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private Long memberId;
 
-    private final String AUTHORIZATION_HEADER = "Authorization";
-    private final String TOKEN_PREFIX = "Bearer ";
-
     private final String contextPath;
     private final String prefixUrl;
 
+    @Autowired
+    private TestToken testToken;
 
 
     public MemberControllerTest(@Value("${server.servlet.context-path}") String contextPath) {
         this.contextPath = contextPath;
         this.prefixUrl = contextPath + "/api/member";
+    }
+
+    private String getAccessToken() {
+        return testToken.getAccessToken(Authority.ADMIN);
     }
 
     @DisplayName("Get all member")
@@ -95,7 +95,7 @@ class MemberControllerTest {
                 + "&searchName={searchName}"
                 + "&gender={gender}", page, size, searchName, gender)
                 .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
+                .header(testToken.AUTHORIZATION, String.format("%s%s", testToken.BEARER, getAccessToken()))
         );
 
         //then
@@ -129,13 +129,13 @@ class MemberControllerTest {
 
     @DisplayName("Get one member")
     @Test
-    void testViewMember() throws Exception {
+    void testGetMember() throws Exception {
         //given
 
         //when
         ResultActions result = mockMvc.perform(get(prefixUrl+"/{id}", memberId)
                 .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
+                .header(testToken.AUTHORIZATION, String.format("%s%s", testToken.BEARER, getAccessToken()))
         );
 
         //then
@@ -177,7 +177,7 @@ class MemberControllerTest {
         //when
         ResultActions result = mockMvc.perform(patch(prefixUrl+"/{id}", memberId)
                 .contextPath(contextPath).contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, String.format("%s%s", TOKEN_PREFIX, getAccessToken()))
+                .header(testToken.AUTHORIZATION, String.format("%s%s", testToken.BEARER, getAccessToken()))
                 .content(objectMapper.writeValueAsString(memberUpdateDto))
         );
 
@@ -226,22 +226,5 @@ class MemberControllerTest {
         member.getMemberAuthorityList().add(memberAuthority);
         memberRepository.save(member);
         memberId = member.getId();
-    }
-
-    private String getAccessToken() {
-        MemberAuthority memberAuthority = MemberAuthority.builder()
-                .authority(Authority.ADMIN)
-                .build();
-
-        Member member = Member.builder()
-                .userId("admin")
-                .password(passwordEncoder.encode("1234"))
-                .name("test")
-                .gender(Gender.MALE)
-                .build();
-
-        member.getMemberAuthorityList().add(memberAuthority);
-        memberRepository.save(member);
-        return jwtTokenHandler.generateToken(member);
     }
 }

@@ -1,0 +1,61 @@
+== Item-API
+
+=== Save-Item
+
+==== Request Sample
+include::{snippets}/save-item/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/save-item/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/save-item/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/save-item/response-fields.adoc[]
+
+
+
+=== Update-Item
+
+==== Request Sample
+include::{snippets}/update-item/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/update-item/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/update-item/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/update-item/response-fields.adoc[]
+
+
+=== View-Item
+
+==== Request Sample
+include::{snippets}/get-item/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/get-item/path-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/get-item/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/get-item/response-fields.adoc[]
+
+
+=== List-Item
+
+==== Request Sample
+include::{snippets}/list-item/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/list-item/query-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/list-item/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/list-item/response-fields.adoc[]
