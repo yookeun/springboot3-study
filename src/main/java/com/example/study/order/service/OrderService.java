@@ -7,8 +7,11 @@ import com.example.study.member.respository.MemberRepository;
 import com.example.study.order.domain.Order;
 import com.example.study.order.dto.OrderDto;
 import com.example.study.order.dto.OrderDto.OrderRequestDto;
+import com.example.study.order.dto.OrderSearchCondition;
 import com.example.study.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +24,49 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
-    @Transactional
-    public OrderDto save(OrderRequestDto orderRequestDto) {
-        Member member = memberRepository.findById(orderRequestDto.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("This Member ID does not exist"));
-        Item item = itemRepository.findById(orderRequestDto.getItemId())
+
+    public Page<OrderDto> getAllOrders(OrderSearchCondition condition, Pageable pageable) {
+        return orderRepository.getAllOrders(condition, pageable).map(OrderDto::fromEntity);
+    }
+
+    public OrderDto getOneOrder(Long id) {
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("This Order ID does not exist"));
-        orderRequestDto.setItem(item);
-        orderRequestDto.setMember(member);
-        Order order = orderRepository.save(orderRequestDto.toEntity());
         return OrderDto.fromEntity(order);
+    }
+
+    @Transactional
+    public OrderDto saveOrder(OrderRequestDto requestDto) {
+        Member member = memberRepository.findById(requestDto.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("This Member ID does not exist"));
+        Item item = itemRepository.findById(requestDto.getItemId())
+                .orElseThrow(() -> new IllegalArgumentException("This Item ID does not exist"));
+        requestDto.setItem(item);
+        requestDto.setMember(member);
+        Order order = orderRepository.save(requestDto.toEntity());
+        return OrderDto.fromEntity(order);
+    }
+
+    @Transactional
+    public OrderDto updateOrder(Long id, OrderRequestDto requestDto) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("This Order ID does not exist"));
+        Item item = itemRepository.findById(requestDto.getItemId())
+                .orElseThrow(() -> new IllegalArgumentException("This Item ID does not exist"));
+
+        order.updateItem(item);
+        order.updateOrderStatus(requestDto.getOrderStatus());
+        order.updateOrderCount(requestDto.getOrderCount());
+        order.updateOrderDate(requestDto.getOrderDate());
+
+        return OrderDto.fromEntity(order);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("This Order ID does not exist"));
+        orderRepository.delete(order);
     }
 
 }

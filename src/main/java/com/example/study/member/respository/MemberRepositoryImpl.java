@@ -5,6 +5,7 @@ import static com.example.study.member.domain.QMember.member;
 import com.example.study.member.domain.Member;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.enums.Gender;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -23,20 +24,23 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     @Override
     public Page<Member> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
 
+        Predicate[] where = {
+                containsSearchName(condition.getSearchName()),
+                eqIsGender(condition.getGender())
+        };
+
         List<Member> result = queryFactory
                 .select(member)
                 .from(member)
-                .where(
-                        containsSearchName(condition.getSearchName()),
-                        eqIsGender(condition.getGender())
-                )
+                .where(where)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> count = queryFactory
                 .select(member.count())
-                .from(member);
+                .from(member)
+                .where(where);
 
         return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
     }

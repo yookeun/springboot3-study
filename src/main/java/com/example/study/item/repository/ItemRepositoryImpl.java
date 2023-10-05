@@ -5,6 +5,7 @@ import static com.example.study.item.domain.QItem.item;
 import com.example.study.item.domain.Item;
 import com.example.study.item.dto.ItemSearchCondition;
 import com.example.study.member.enums.ItemType;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -26,16 +27,21 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
 
     @Override
     public Page<Item> getAllItems(ItemSearchCondition condition, Pageable pageable) {
+        Predicate[] where = {
+                containsSearchName(condition.getItemName()),
+                inItemTypes(condition.getItemType())
+        };
 
-        List<Item> result = queryFactory.select(item)
+        List<Item> result = queryFactory
+                .select(item)
                 .from(item)
-                .where(
-                        containsSearchName(condition.getItemName()),
-                        inItemTypes(condition.getItemType())
-                )
+                .where(where)
                 .fetch();
 
-        JPAQuery<Long> count = queryFactory.select(item.count()).from(item);
+        JPAQuery<Long> count = queryFactory
+                .select(item.count())
+                .from(item)
+                .where(where);
 
         return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
     }

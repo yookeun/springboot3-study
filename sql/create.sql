@@ -3,7 +3,7 @@ USE STUDY;
 DROP TABLE `MEMBER`;
 DROP TABLE `MEMBER_AUTHORITY`;
 DROP TABLE `ITEM`;
-DROP TABLE `ORDER`;
+DROP TABLE `ORDERS`;
 
 
 CREATE TABLE `MEMBER` (
@@ -44,12 +44,13 @@ CREATE TABLE `ITEM` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `ORDER` (
+CREATE TABLE `ORDERS` (
                          `ORDER_ID` bigint NOT NULL AUTO_INCREMENT,
                          `MEMBER_ID` bigint DEFAULT NULL,
                          `ITEM_ID` bigint DEFAULT NULL,
                          `ORDER_COUNT` int DEFAULT NULL,
                          `ORDER_STATUS` varchar(20) DEFAULT NULL,
+                         `ORDER_DATE` date DEFAULT NULL,
                          `CREATE_DATE` datetime DEFAULT NULL,
                          `UPDATE_DATE` datetime DEFAULT NULL,
                          PRIMARY KEY (`ORDER_ID`)

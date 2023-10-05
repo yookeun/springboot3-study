@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +48,25 @@ public class Order extends BaseEntity {
     @Column(name = "ORDER_STATUS")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Column(name = "ORDER_DATE")
+    private LocalDate orderDate;
+
+    public void updateItem(Item item) {
+        this.item = item;
+    }
+
+    public void updateOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void updateOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
+
+
 }
