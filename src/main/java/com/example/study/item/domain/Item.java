@@ -39,6 +39,9 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
+    @Column(name = "USED_COUNT")
+    private Integer usedCount = 0;
+
     public void updateItemName(String itemName) {
         this.itemName = itemName;
     }
@@ -49,6 +52,10 @@ public class Item extends BaseEntity {
 
     public void updateItemType(ItemType itemType) {
         this.itemType = itemType;
+    }
+
+    public void updateUsedCount(Integer usedCount) {
+        this.usedCount += usedCount;
     }
 
 }

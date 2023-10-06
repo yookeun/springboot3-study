@@ -1,5 +1,6 @@
 package com.example.study.order.service;
 
+import com.example.study.annotation.ItemCheck;
 import com.example.study.item.domain.Item;
 import com.example.study.item.repository.ItemRepository;
 import com.example.study.member.domain.Member;
@@ -36,6 +37,7 @@ public class OrderService {
     }
 
     @Transactional
+    @ItemCheck
     public OrderDto saveOrder(OrderRequestDto requestDto) {
         Member member = memberRepository.findById(requestDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("This Member ID does not exist"));

@@ -1,5 +1,6 @@
 package com.example.study.order.dto;
 
+import com.example.study.annotation.ItemCheck;
 import com.example.study.item.domain.Item;
 import com.example.study.item.dto.ItemDto;
 import com.example.study.member.domain.Member;
@@ -27,6 +28,7 @@ public class OrderDto {
 
     private Long id;
     private MemberDto memberDto;
+    @ItemCheck
     private ItemDto itemDto;
     private Integer orderCount;
     private OrderStatus orderStatus;

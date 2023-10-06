@@ -18,7 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class OrderSearchCondition {
 
     private String searchName;
-    private String OrderStatus;
+    private String orderStatus;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
