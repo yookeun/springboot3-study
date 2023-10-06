@@ -46,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 class ItemControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -133,7 +134,8 @@ class ItemControllerTest {
                 .build();
 
         //when
-        ResultActions result = mockMvc.perform(post(prefixUrl).contextPath(contextPath)
+        ResultActions result = mockMvc.perform(post(prefixUrl)
+                .contextPath(contextPath)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(testToken.AUTHORIZATION,
                         String.format("%s%s", testToken.BEARER, getAccessToken()))

@@ -7,6 +7,7 @@ import com.example.study.member.dto.MemberDto;
 import com.example.study.member.enums.OrderStatus;
 import com.example.study.order.domain.Order;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -69,8 +70,9 @@ public class OrderDto {
         @NotNull(message = "required")
         private OrderStatus orderStatus;
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
         @NotNull(message = "required")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
         private LocalDate orderDate;
 
         public Order toEntity() {

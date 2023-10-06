@@ -13,3 +13,4 @@ endif::[]
 
 include::Member-API.adoc[]
 include::Item-API.adoc[]
+include::Order-API.adoc[]

@@ -1,0 +1,76 @@
+== Order-API
+
+=== Save-Order
+
+==== Request Sample
+include::{snippets}/save-order/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/save-order/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/save-order/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/save-order/response-fields.adoc[]
+
+
+
+=== Update-Order
+
+==== Request Sample
+include::{snippets}/update-order/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/update-order/request-fields.adoc[]
+
+==== Response Sample
+include::{snippets}/update-order/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/update-order/response-fields.adoc[]
+
+
+=== View-Order
+
+==== Request Sample
+include::{snippets}/get-order/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/get-order/path-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/get-order/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/get-order/response-fields.adoc[]
+
+
+=== List-Order
+
+==== Request Sample
+include::{snippets}/list-order/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/list-order/query-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/list-order/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/list-order/response-fields.adoc[]
+
+
+=== Delete-Order
+
+==== Request Sample
+include::{snippets}/delete-order/http-request.adoc[]
+
+==== Request Field
+include::{snippets}/delete-order/path-parameters.adoc[]
+
+==== Response Sample
+include::{snippets}/delete-order/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/delete-order/response-body.adoc[]

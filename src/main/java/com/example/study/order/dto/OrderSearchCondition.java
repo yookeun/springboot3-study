@@ -1,5 +1,7 @@
 package com.example.study.order.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +21,10 @@ public class OrderSearchCondition {
     private String OrderStatus;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 }
