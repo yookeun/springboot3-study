@@ -25,7 +25,6 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
-
     public Page<OrderDto> getAllOrders(OrderSearchCondition condition, Pageable pageable) {
         return orderRepository.getAllOrders(condition, pageable).map(OrderDto::fromEntity);
     }

@@ -3,8 +3,12 @@ package com.example.study.order.controller;
 import com.example.study.order.dto.OrderDto;
 import com.example.study.order.dto.OrderDto.OrderRequestDto;
 import com.example.study.order.dto.OrderSearchCondition;
+import com.example.study.order.dto.OrderStatisticDto;
+import com.example.study.order.dto.OrderStatisticDto.OrderStatisticsDto;
+import com.example.study.order.service.OrderQueryService;
 import com.example.study.order.service.OrderService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderQueryService orderQueryService;
 
     @GetMapping
     public Page<OrderDto> getAllOrders(OrderSearchCondition condition, Pageable pageable) {
@@ -53,6 +58,18 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long id) {
         orderService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/statistic/{startDate}/{endDate}")
+    public ResponseEntity<OrderStatisticDto> getOrderStatisticsDto(
+            @PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
+        return ResponseEntity.ok(orderQueryService.getOrderStatisticsDto(startDate, endDate));
+    }
+
+    @GetMapping("/statistics/{startDate}/{endDate}")
+    public List<OrderStatisticsDto> getOrderStatisticsDtoList(
+            @PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
+        return orderQueryService.getOrderStatisticsDtoList(startDate, endDate);
     }
 
 }

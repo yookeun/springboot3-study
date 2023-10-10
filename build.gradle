@@ -55,6 +55,9 @@ dependencies {
 	//rest docs
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	//https://github.com/72services/qlrm
+	implementation 'org.qlrm:qlrm:4.0.1'
 }
 
 def generated = 'src/main/generated'
