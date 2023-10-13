@@ -1,7 +1,9 @@
 package com.example.study.handler;
 
+import com.example.study.handler.JwtResult.JwtResultType;
 import com.example.study.member.domain.Member;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,8 +25,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class JwtTokenHandler {
 
-    @Value("${jwt.secret-key}")
-    private String jwtSecretKey;
+
+    private final String jwtSecretKey;
+    private final Long accessTokenExpiredMin;
+    private final Long refreshTokenExpiredDays;
+
+    public JwtTokenHandler(@Value("${jwt.secret-key}") String jwtSecretKey,
+            @Value("${jwt.access-token-expired-min}") Long accessTokenExpiredMin,
+            @Value("${jwt.refresh-token-expired-days}") Long refreshTokenExpiredDays) {
+        this.jwtSecretKey = jwtSecretKey;
+        this.accessTokenExpiredMin = accessTokenExpiredMin;
+        this.refreshTokenExpiredDays = refreshTokenExpiredDays;
+    }
 
     private String createToken(Map<String, Object> claims) {
         String secretKeyEncodeBase64 = Encoders.BASE64.encode(jwtSecretKey.getBytes());
@@ -35,30 +47,48 @@ public class JwtTokenHandler {
                 .signWith(key)
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * (accessTokenExpiredMin)))
                 .compact();
     }
 
-    private Claims extractAllClaims(String token) {
+    private String createRefreshToken(Map<String, Object> claims) {
+        String secretKeyEncodeBase64 = Encoders.BASE64.encode(jwtSecretKey.getBytes());
+        byte[] keyBytes = Decoders.BASE64.decode(secretKeyEncodeBase64);
+        Key key = Keys.hmacShaKeyFor(keyBytes);
+
+        return Jwts.builder()
+                .signWith(key)
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * (refreshTokenExpiredDays)))
+                .compact();
+    }
+
+    public JwtResult extractAllClaims(String token) {
         if (StringUtils.isEmpty(token)) return null;
         SignatureAlgorithm sa = SignatureAlgorithm.HS256;
         SecretKeySpec secretKeySpec = new SecretKeySpec(jwtSecretKey.getBytes(), sa.getJcaName());
         Claims claims;
+        JwtResult jwtResult = new JwtResult();
         try {
             claims = Jwts.parserBuilder().setSigningKey(secretKeySpec).build()
-                    .parseClaimsJws(token).getBody();
+                    .parseClaimsJws(token).getBody();            ;
+            jwtResult.setJwtResultType(JwtResultType.TOKEN_SUCCESS);
+            jwtResult.setClaims(claims);
+
+        } catch (ExpiredJwtException e) {
+            jwtResult.setJwtResultType(JwtResultType.TOKEN_EXPIRED);
+            jwtResult.setClaims(null);
+
         } catch (JwtException e) {
-            log.error(e.toString());
-            claims = null;
+            jwtResult.setJwtResultType(JwtResultType.TOKEN_INVALID);
+            jwtResult.setClaims(null);
         }
-        return claims;
+        return jwtResult;
     }
 
-    public String extractUsername(String token) {
-        final Claims claims = extractAllClaims(token);
-        if (claims == null) return null;
-        else return claims.get("username",String.class);
-    }
+
+
 
     public String generateToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
@@ -69,4 +99,11 @@ public class JwtTokenHandler {
         claims.put("authorities", auths);
         return createToken(claims);
     }
+
+    public String generateRefreshToken(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", member.getUserId());
+        return createRefreshToken(claims);
+    }
+
 }

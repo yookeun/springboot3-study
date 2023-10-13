@@ -58,6 +58,9 @@ dependencies {
 
 	//https://github.com/72services/qlrm
 	implementation 'org.qlrm:qlrm:4.0.1'
+
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 def generated = 'src/main/generated'

@@ -43,4 +43,5 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateMember(id, requestDto));
     }
 
+
 }

@@ -31,4 +31,17 @@ public class ErrorResponse {
                 .msg(httpStatus.name())
                 .build()));
     }
+
+    public static void exceptionCall(HttpStatus httpStatus, HttpServletResponse response, String msg) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setStatus(httpStatus.value());
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json");
+        response.getWriter().write(objectMapper.writeValueAsString(ErrorResponse.builder()
+                .code(httpStatus.value())
+                .msg(msg)
+                .build()));
+    }
+
+
 }

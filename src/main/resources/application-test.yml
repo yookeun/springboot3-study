@@ -9,12 +9,12 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:16691/STUDY_TEST?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
-#    username: root
-#    password: test
-    url: jdbc:mysql://localhost:3306/STUDY_TEST?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:16691/STUDY_TEST?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
     username: root
-    password: 1234
+    password: test
+#    url: jdbc:mysql://localhost:3306/STUDY_TEST?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: 1234
     hikari:
       max-lifetime: 30000
       maximum-pool-size: 10
@@ -29,6 +29,11 @@ spring:
         default_batch_fetch_size: 1000
         show_sql: true
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      password: bbqredis
+      port: 16694
 
 logging.level:
   org.hibernate.SQL: debug

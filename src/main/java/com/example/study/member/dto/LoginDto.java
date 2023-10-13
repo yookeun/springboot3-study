@@ -18,6 +18,7 @@ public class LoginDto {
     private String name;
     private String password;
     private String accessToken;
+    private String refreshToken;
 
     @Getter
     @Setter

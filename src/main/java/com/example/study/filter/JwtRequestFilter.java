@@ -2,6 +2,8 @@ package com.example.study.filter;
 
 import com.example.study.config.UserDetailService;
 import com.example.study.exception.ErrorResponse;
+import com.example.study.handler.JwtResult;
+import com.example.study.handler.JwtResult.JwtResultType;
 import com.example.study.handler.JwtTokenHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,7 +50,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             token = authorizationHeader.substring(7);
         }
 
-        username = jwtTokenHandler.extractUsername(token);
+        JwtResult jwtResult = jwtTokenHandler.extractAllClaims(token);
+        if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_EXPIRED) {
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response, JwtResultType.TOKEN_EXPIRED.name());
+            return;
+        }
+        if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_INVALID) {
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response, JwtResultType.TOKEN_INVALID.name());
+            return;
+        }
+
+        username = jwtResult.getClaims().get("username").toString();
 
         if (username == null) {
             ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response);

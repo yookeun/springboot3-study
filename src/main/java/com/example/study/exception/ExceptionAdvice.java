@@ -59,4 +59,13 @@ public class ExceptionAdvice {
                 .msg(stringBuilder.toString())
                 .build());
     }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorResponse> authException(AuthException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse.builder()
+                .code(HttpStatus.UNAUTHORIZED.value())
+                .msg(e.getMessage())
+                .build());
+    }
 }
