@@ -3,6 +3,7 @@ package com.example.study.member.respository;
 import static com.example.study.member.domain.QMember.member;
 
 import com.example.study.member.domain.Member;
+import com.example.study.member.dto.MemberOrderDto;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.enums.Gender;
 import com.querydsl.core.types.Predicate;
@@ -43,6 +44,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(where);
 
         return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
+    }
+
+    @Override
+    public Page<MemberOrderDto> getAllMemberAndOrders(MemberSearchCondition condition,
+            Pageable pageable) {
+
+
+
+        return null;
     }
 
     private BooleanExpression containsSearchName(String searchName) {

@@ -146,7 +146,8 @@ class LoginControllerTestTest {
                         fieldWithPath("userId").description("USER ID"),
                         fieldWithPath("name").description("USER NAME"),
                         fieldWithPath("password").description("PASSWORD"),
-                        fieldWithPath("accessToken").description("JWT TOKEN")
+                        fieldWithPath("accessToken").description("JWT TOKEN"),
+                        fieldWithPath("refreshToken").description("REFRESH TOKEN")
                 )
         ));
 
