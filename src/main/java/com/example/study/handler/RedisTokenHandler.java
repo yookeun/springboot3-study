@@ -67,9 +67,9 @@ public class RedisTokenHandler {
         valueOperations.set(userTokenInfo.getUserId(), objectMapper.writeValueAsString(userTokenInfo));
     }
 
-    public void deleteUserToken(String userId) {
+    public void deleteRedis(String key) {
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
-        valueOperations.getAndDelete(userId);
+        valueOperations.getAndDelete(key);
     }
 
 }
