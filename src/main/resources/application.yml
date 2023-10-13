@@ -43,5 +43,5 @@ logging.level:
   org.hibernate.type: trace
 
 jwt.secret-key: 89e94aae-c3a8-4046-a94a-aec3a8b046fb
-jwt.access-token-expired-min: 1
+jwt.access-token-expired-min: 30
 jwt.refresh-token-expired-days: 7
