@@ -1,14 +1,19 @@
 package com.example.study.member.respository;
 
 import static com.example.study.member.domain.QMember.member;
+import static com.example.study.order.domain.QOrder.order;
+
 
 import com.example.study.member.domain.Member;
 import com.example.study.member.dto.MemberOrderDto;
 import com.example.study.member.dto.MemberSearchCondition;
+import com.example.study.member.dto.QMemberOrderDto;
 import com.example.study.member.enums.Gender;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -47,12 +52,39 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public Page<MemberOrderDto> getAllMemberAndOrders(MemberSearchCondition condition,
+    public Page<MemberOrderDto> getAllMemberAndOrderCount(MemberSearchCondition condition,
             Pageable pageable) {
 
+        Predicate[] where = {
+                containsSearchName(condition.getSearchName()),
+                eqIsGender(condition.getGender())
+        };
 
+        List<MemberOrderDto> result = queryFactory.select(
+                    new QMemberOrderDto(
+                            member.id.as("memberId"),
+                            member.name.as("memberName"),
+                            ExpressionUtils.as(
+                                    JPAExpressions
+                                            .select(order.count())
+                                            .from(order)
+                                            .where(
+                                                    order.member.eq(member)
+                                            ),"orderCount"
+                            )
+                    )
+                )
+                .from(member)
+                .where(where)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize()).fetch();
 
-        return null;
+        JPAQuery<Long> count = queryFactory
+                .select(member.count())
+                .from(member)
+                .where(where);
+
+        return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
     }
 
     private BooleanExpression containsSearchName(String searchName) {

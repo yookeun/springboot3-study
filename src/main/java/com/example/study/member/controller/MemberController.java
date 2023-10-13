@@ -2,6 +2,7 @@ package com.example.study.member.controller;
 
 import com.example.study.member.dto.MemberDto;
 import com.example.study.member.dto.MemberDto.MemberUpdateDto;
+import com.example.study.member.dto.MemberOrderDto;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -43,5 +44,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateMember(id, requestDto));
     }
 
+    @GetMapping("/orders")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<MemberOrderDto> getAllMemberAndOrderCount(MemberSearchCondition condition, Pageable pageable) {
+        return memberService.getAllMemberAndOrderCount(condition, pageable);
+    }
 
 }

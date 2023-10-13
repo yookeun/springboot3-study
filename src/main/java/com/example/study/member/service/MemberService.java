@@ -11,6 +11,7 @@ import com.example.study.member.dto.LoginDto.LoginRequestDto;
 import com.example.study.member.dto.MemberDto;
 import com.example.study.member.dto.MemberDto.MemberRequestDto;
 import com.example.study.member.dto.MemberDto.MemberUpdateDto;
+import com.example.study.member.dto.MemberOrderDto;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.dto.RefreshTokenDto;
 import com.example.study.member.dto.UserTokenInfo;
@@ -94,6 +95,10 @@ public class MemberService {
         return MemberDto.fromEntity(member);
     }
 
+    public Page<MemberOrderDto> getAllMemberAndOrderCount(MemberSearchCondition condition, Pageable pageable) {
+        return memberRepository.getAllMemberAndOrderCount(condition, pageable);
+    }
+
     public String getRenewAccessToken(RefreshTokenDto refreshTokenDto) {
 
         UserTokenInfo userTokenInfo = checkToken(refreshTokenDto);
@@ -148,7 +153,7 @@ public class MemberService {
             throw new AuthException(jwtResult.getJwtResultType().name());
         }
 
-        //4. 전달받은 accessToken과 저장된 accessToken이 다르다면 해당 키 삭제후 401 에러 처리한다.
+        //4.전달받은 accessToken과 저장된 accessToken이 다르다면 해당 키 삭제후 401 에러 처리한다.
         if (!refreshTokenDto.getAccessToken().equals(userTokenInfo.getAccessToken())) {
             redisTokenHandler.deleteUserToken(userTokenInfo.getUserId());
             log.warn("requested accessToken != saved accessToken");

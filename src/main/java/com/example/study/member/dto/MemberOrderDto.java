@@ -13,14 +13,13 @@ import lombok.Setter;
 public class MemberOrderDto {
 
     private Long memberId;
-    private String name;
+    private String memberName;
     private Long memberCount;
 
-
     @QueryProjection
-    public MemberOrderDto(Long memberId, String name, Long memberCount) {
+    public MemberOrderDto(Long memberId, String memberName, Long memberCount) {
         this.memberId = memberId;
-        this.name = name;
+        this.memberName = memberName;
         this.memberCount = memberCount;
     }
 }
