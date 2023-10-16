@@ -1,7 +1,7 @@
 package com.example.study.member.domain;
 
 import com.example.study.common.BaseEntity;
-import com.example.study.common.EncDecConverter;
+import com.example.study.converter.EncDecConverter;
 import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;

@@ -1,5 +1,6 @@
-package com.example.study.common;
+package com.example.study.converter;
 
+import com.example.study.handler.EncryptHandler;
 import com.querydsl.core.util.StringUtils;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

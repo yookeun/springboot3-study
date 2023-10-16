@@ -1,7 +1,7 @@
 package com.example.study.item.domain;
 
 import com.example.study.common.BaseEntity;
-import com.example.study.common.YnToBooleanConverter;
+import com.example.study.converter.YnToBooleanConverter;
 import com.example.study.member.enums.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

@@ -1,4 +1,4 @@
-package com.example.study.common;
+package com.example.study.converter;
 
 import com.querydsl.core.util.StringUtils;
 import jakarta.persistence.AttributeConverter;
