@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class JwtTokenHandler {
 
-
     private final String jwtSecretKey;
     private final Long accessTokenExpiredMin;
     private final Long refreshTokenExpiredDays;
@@ -86,9 +85,6 @@ public class JwtTokenHandler {
         }
         return jwtResult;
     }
-
-
-
 
     public String generateToken(Member member) {
         Map<String, Object> claims = new HashMap<>();

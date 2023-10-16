@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JpaConfig {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -15,4 +16,5 @@ public class JpaConfig {
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(em);
     }
+
 }

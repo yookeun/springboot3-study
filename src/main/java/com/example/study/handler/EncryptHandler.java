@@ -27,7 +27,6 @@ public class EncryptHandler {
         return Base64.getEncoder().encodeToString(keyBytes);
     }
 
-
     public  String encrypt(String plaintext) throws Exception {
         byte[] keyBytes = generateKey().getBytes();
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");

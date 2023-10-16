@@ -16,4 +16,5 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             AuthenticationException authException) throws IOException, ServletException {
         ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response);
     }
+
 }

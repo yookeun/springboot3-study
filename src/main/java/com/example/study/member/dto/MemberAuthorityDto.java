@@ -16,12 +16,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberAuthorityDto {
+
     private Long id;
     private Authority authority;
+
     @JsonIgnore
     private Member member;
-
-
 
     public static MemberAuthorityDto fromEntity(MemberAuthority memberAuthority) {
         return MemberAuthorityDto.builder()
@@ -38,6 +38,7 @@ public class MemberAuthorityDto {
     public static class MemberAuthorityRequestDto {
 
         private Authority authority;
+
         @JsonIgnore
         private Member member;
 
@@ -48,4 +49,5 @@ public class MemberAuthorityDto {
                     .build();
         }
     }
+
 }

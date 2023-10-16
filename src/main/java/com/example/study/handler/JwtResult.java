@@ -18,11 +18,11 @@ public class JwtResult {
     private JwtResultType jwtResultType;
     private Claims claims;
 
-
     public enum JwtResultType {
         TOKEN_EXPIRED,
         TOKEN_INVALID,
         TOKEN_SUCCESS,
         UNUSUAL_REQUEST
     }
+
 }

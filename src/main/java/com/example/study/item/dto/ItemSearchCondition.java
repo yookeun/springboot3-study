@@ -15,4 +15,5 @@ public class ItemSearchCondition {
 
     private String itemName;
     private String itemType;
+
 }

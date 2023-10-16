@@ -19,4 +19,5 @@ public interface ItemRepository extends Repository<Item, Long>, ItemRepositoryCu
         WHERE m.id = :itemId
     """)
     void updateUsedCount(@Param("itemId") Long itemId);
+
 }

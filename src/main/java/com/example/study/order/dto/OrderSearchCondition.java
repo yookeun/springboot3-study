@@ -27,4 +27,5 @@ public class OrderSearchCondition {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
 }

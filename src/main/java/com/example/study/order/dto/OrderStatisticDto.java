@@ -23,7 +23,6 @@ public class OrderStatisticDto {
     private BigDecimal doingCount;
     private BigDecimal doneCount;
 
-
     @Getter
     @Setter
     @Builder

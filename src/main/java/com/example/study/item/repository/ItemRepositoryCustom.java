@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ItemRepositoryCustom {
     Page<Item> getAllItems(ItemSearchCondition condition, Pageable pageable);
+
 }

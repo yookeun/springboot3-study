@@ -93,4 +93,5 @@ public class Member extends BaseEntity {
         this.memberAuthorityList.clear();
         addAuthorities(memberAuthorityRequestDtoList);
     }
+
 }

@@ -33,4 +33,5 @@ public class LoginDto {
         @NotBlank(message = "PASSWORD is required.")
         private String password;
     }
+
 }

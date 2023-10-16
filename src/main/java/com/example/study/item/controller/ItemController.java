@@ -46,5 +46,6 @@ public class ItemController {
             @RequestBody @Valid ItemRequestDto requestDto) {
         return ResponseEntity.ok(itemService.updateItem(id, requestDto));
     }
+
 }
 

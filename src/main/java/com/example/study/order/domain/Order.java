@@ -68,4 +68,5 @@ public class Order extends BaseEntity {
     public void updateOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
+
 }

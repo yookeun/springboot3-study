@@ -22,4 +22,5 @@ public class OrderQueryService {
     public List<OrderStatisticsDto> getOrderStatisticsDtoList(String startDate, String endDate) {
         return orderQueryRepository.getOrderStatisticsDtoList(startDate, endDate);
     }
+
 }

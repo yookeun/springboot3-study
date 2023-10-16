@@ -19,4 +19,5 @@ public class YnToBooleanConverter implements AttributeConverter<String, Boolean>
     public String convertToEntityAttribute(Boolean dbData) {
         return dbData ? "Y" : "N";
     }
+
 }

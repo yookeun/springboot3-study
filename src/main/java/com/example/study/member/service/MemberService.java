@@ -32,6 +32,7 @@ import org.springframework.util.CollectionUtils;
 @Transactional(readOnly = true)
 @Slf4j
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final JwtTokenHandler jwtTokenHandler;
     private final PasswordEncoder passwordEncoder;
@@ -172,8 +173,8 @@ public class MemberService {
         return userTokenInfo;
     }
 
-
     private boolean isMatchPassword(String rawPassword, String dbPassword) {
         return passwordEncoder.matches(rawPassword, dbPassword);
     }
+
 }

@@ -24,4 +24,5 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         ErrorResponse.exceptionCall(HttpStatus.FORBIDDEN, response);
     }
+
 }

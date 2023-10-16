@@ -51,7 +51,6 @@ public class RedisTokenHandler {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         return Optional.of(objectMapper.readValue(json, UserTokenInfo.class));
-
     }
 
     private void saveRedis(UserTokenInfo userTokenInfo) throws JsonProcessingException {

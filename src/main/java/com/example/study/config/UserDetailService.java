@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -32,7 +33,6 @@ public class UserDetailService implements UserDetailsService {
         }
         return new User(optionalMember.get());
     }
-
 
     static class User implements UserDetails {
 

@@ -23,4 +23,5 @@ public class RefreshTokenDto {
 
     @NotBlank(message = "required")
     private String refreshToken;
+
 }

@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderRepositoryCustom {
     Page<Order> getAllOrders(OrderSearchCondition condition, Pageable pageable);
+
 }

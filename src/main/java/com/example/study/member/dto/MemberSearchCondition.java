@@ -13,6 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class MemberSearchCondition {
+
     private String searchName;
     private Gender gender;
+
 }

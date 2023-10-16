@@ -41,4 +41,5 @@ public class MemberAuthority extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
 }

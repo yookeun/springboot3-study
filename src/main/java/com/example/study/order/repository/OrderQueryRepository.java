@@ -15,7 +15,6 @@ public class OrderQueryRepository {
     @PersistenceContext
     private EntityManager em;
 
-
     public OrderStatisticDto getOrderStatisticsDto(String startDate, String endDate) {
         String sql = new StringBuilder()
                 .append(" SELECT")
@@ -57,4 +56,5 @@ public class OrderQueryRepository {
 
         return jpaResultMapper.list(nativeQuery, OrderStatisticsDto.class);
     }
+
 }

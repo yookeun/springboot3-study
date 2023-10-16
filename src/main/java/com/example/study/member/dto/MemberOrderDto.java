@@ -22,4 +22,5 @@ public class MemberOrderDto {
         this.memberName = memberName;
         this.memberCount = memberCount;
     }
+
 }
