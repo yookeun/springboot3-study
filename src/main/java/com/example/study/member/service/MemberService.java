@@ -103,13 +103,13 @@ public class MemberService {
 
         UserTokenInfo userTokenInfo = checkToken(refreshTokenDto);
 
-        //access token를 새로 만들어 준다.
+        //Create a new access token.
         Member member = memberRepository.findByUserId(userTokenInfo.getUserId())
                 .orElseThrow(() -> new AuthException(JwtResultType.UNUSUAL_REQUEST.name()));
         String renewAccessToken =  jwtTokenHandler.generateToken(member);
         userTokenInfo.setAccessToken(renewAccessToken);
 
-        //레디스에 업데이트
+        //Update to redis
         try {
             redisTokenHandler.updateRedis(userTokenInfo);
         } catch (JsonProcessingException e) {
@@ -131,7 +131,7 @@ public class MemberService {
             throw new RuntimeException(e);
         }
 
-        //1.userId에 저장된 키값이 없다면 에러 처리
+        //1. Throw an error if userId has no stored key value
         if (optionalUserTokenInfo.isEmpty()) {
             log.warn("Not found Redis key = {}", refreshTokenDto.getUserId());
             throw new AuthException(JwtResultType.TOKEN_EXPIRED.name());
@@ -139,13 +139,13 @@ public class MemberService {
 
         UserTokenInfo userTokenInfo = optionalUserTokenInfo.get();
 
-        //2.전달받은 refreshToken과 저장된 refreshToken이 다르다면 401 에러 처리한다.
+        //2.If the received refreshToken is different from the stored refreshToken, a 401 error is thrown.
         if (!refreshTokenDto.getRefreshToken().equals(userTokenInfo.getRefreshToken())) {
             log.warn("requested refreshToken != saved refreshToken");
             throw new AuthException(JwtResultType.UNUSUAL_REQUEST.name());
         }
 
-        //3.refreshToken이 유효하지 않거나 만료된 토큰이라면 해당 키 삭제후 401 에러 처리한다.
+        //3. If the refreshToken is an invalid or expired token, delete the key and throw a 401 error.
         jwtResult = jwtTokenHandler.extractAllClaims(userTokenInfo.getRefreshToken());
         if (jwtResult.getJwtResultType() != JwtResultType.TOKEN_SUCCESS) {
             redisTokenHandler.deleteRedis(userTokenInfo.getUserId());
@@ -153,14 +153,14 @@ public class MemberService {
             throw new AuthException(jwtResult.getJwtResultType().name());
         }
 
-        //4.전달받은 accessToken과 저장된 accessToken이 다르다면 해당 키 삭제후 401 에러 처리한다.
+        //4.If the received accessToken is different from the stored accessToken, delete the key and handle a 401 error.
         if (!refreshTokenDto.getAccessToken().equals(userTokenInfo.getAccessToken())) {
             redisTokenHandler.deleteRedis(userTokenInfo.getUserId());
             log.warn("requested accessToken != saved accessToken");
             throw new AuthException(JwtResultType.UNUSUAL_REQUEST.name());
         }
 
-        //5.기존 accessToken이 아직 만료되지 않은 토큰이라면 비정상적인 요청으로 해당 키 삭제 후 401 에러 처리한다.
+        //5.If the existing accessToken is not yet an expired token, delete the key as an abnormal request and throw a 401 error.
         jwtResult = jwtTokenHandler.extractAllClaims(userTokenInfo.getAccessToken());
         if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_SUCCESS) {
             redisTokenHandler.deleteRedis(userTokenInfo.getUserId());

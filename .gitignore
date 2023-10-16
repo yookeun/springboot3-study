@@ -36,4 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/generated/
-/src/docs/asciidoc/
+
+/src/main/resources/static/docs/
