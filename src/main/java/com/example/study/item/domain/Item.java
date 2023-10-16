@@ -1,8 +1,10 @@
 package com.example.study.item.domain;
 
 import com.example.study.common.BaseEntity;
+import com.example.study.common.YnToBooleanConverter;
 import com.example.study.member.enums.ItemType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -42,6 +44,10 @@ public class Item extends BaseEntity {
     @Column(name = "USED_COUNT")
     private Integer usedCount = 0;
 
+    @Column(name = "IS_USED")
+    @Convert(converter = YnToBooleanConverter.class)
+    private String isUsed;
+
     public void updateItemName(String itemName) {
         this.itemName = itemName;
     }
@@ -56,6 +62,10 @@ public class Item extends BaseEntity {
 
     public void updateUsedCount(Integer usedCount) {
         this.usedCount += usedCount;
+    }
+
+    public void updateIsUsed(String isUsed) {
+        this.isUsed = isUsed;
     }
 
 }

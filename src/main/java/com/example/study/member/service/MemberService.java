@@ -89,6 +89,7 @@ public class MemberService {
         member.updateName(requestDto.getName());
         member.updateGender(requestDto.getGender());
         member.updatePassword(passwordEncoder.encode(requestDto.getPassword()));
+        member.updatePhone(requestDto.getPhone());
         if (!CollectionUtils.isEmpty(requestDto.getAuthorities())) {
             member.updateAuthorities(requestDto.getAuthorities());
         }

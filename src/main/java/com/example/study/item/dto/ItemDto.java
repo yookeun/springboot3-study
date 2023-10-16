@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class ItemDto {
     private String itemName;
     private Long price;
     private ItemType itemType;
+    private String isUsed;
 
     public static ItemDto fromEntity(Item item) {
         return ItemDto.builder()
@@ -30,6 +32,7 @@ public class ItemDto {
                 .itemName(item.getItemName())
                 .price((item.getPrice()))
                 .itemType(item.getItemType())
+                .isUsed(item.getIsUsed())
                 .build();
     }
 
@@ -50,11 +53,16 @@ public class ItemDto {
         @NotNull(message = "required")
         private ItemType itemType;
 
+        @NotNull(message = "required")
+        @Default
+        private String isUsed = "Y";
+
         public Item toEntity() {
             return Item.builder()
                     .itemName(itemName)
                     .price(price)
                     .itemType(itemType)
+                    .isUsed(isUsed)
                     .build();
         }
     }

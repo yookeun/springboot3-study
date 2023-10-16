@@ -97,6 +97,7 @@ class LoginControllerTestTest {
                         fieldWithPath("userId").description("User's ID"),
                         fieldWithPath("password").description("password"),
                         fieldWithPath("gender").description("MALE or FEMALE"),
+                        fieldWithPath("phone").description("PHONE"),
                         fieldWithPath("authorities[].authority").description("Authorities = [ADMIN, ORDER, ITEM]")
 
                 ),
@@ -105,6 +106,7 @@ class LoginControllerTestTest {
                         fieldWithPath("userId").description("USER ID"),
                         fieldWithPath("name").description("NAME"),
                         fieldWithPath("gender").description("GENDER"),
+                        fieldWithPath("phone").description("PHONE"),
                         fieldWithPath("authorities[].id").ignored(),
                         fieldWithPath("authorities[].authority").description("AUTHORITY")
                 )

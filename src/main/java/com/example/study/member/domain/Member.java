@@ -1,11 +1,13 @@
 package com.example.study.member.domain;
 
 import com.example.study.common.BaseEntity;
+import com.example.study.common.EncDecConverter;
 import com.example.study.member.dto.MemberAuthorityDto.MemberAuthorityRequestDto;
 import com.example.study.member.enums.Authority;
 import com.example.study.member.enums.Gender;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -51,6 +53,10 @@ public class Member extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "PHONE")
+    @Convert(converter = EncDecConverter.class)
+    private String phone;
+
     @Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true,
             fetch = FetchType.LAZY)
@@ -77,6 +83,10 @@ public class Member extends BaseEntity {
 
     public void updatePassword(String encryptedPassword) {
         this.password = encryptedPassword;
+    }
+
+    public void updatePhone(String phone) {
+        this.phone = phone;
     }
 
     public void updateAuthorities(List<MemberAuthorityRequestDto> memberAuthorityRequestDtoList) {

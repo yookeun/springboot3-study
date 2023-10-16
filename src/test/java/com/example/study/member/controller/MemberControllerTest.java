@@ -121,6 +121,7 @@ class MemberControllerTest {
                             fieldWithPath("userId").description("USER ID"),
                             fieldWithPath("name").description("USER NAME"),
                             fieldWithPath("gender").description("USER GENDER"),
+                            fieldWithPath("phone").description("PHONE"),
                             fieldWithPath("authorities[].id").description("ID"),
                             fieldWithPath("authorities[].authority").description("[ADMIN, ITEM, ORDER]")
                         )
@@ -153,6 +154,7 @@ class MemberControllerTest {
                         fieldWithPath("userId").description("USER ID"),
                         fieldWithPath("name").description("USER NAME"),
                         fieldWithPath("gender").description("USER GENDER"),
+                        fieldWithPath("phone").description("PHONE"),
                         fieldWithPath("authorities[].id").description("ID"),
                         fieldWithPath("authorities[].authority").description("[ADMIN, ITEM, ORDER]")
                 )
@@ -171,6 +173,7 @@ class MemberControllerTest {
                 .name("test3")
                 .password("1234")
                 .gender(Gender.MALE)
+                .phone("010-1234-5678")
                 .authorities(List.of(memberAuthorityRequestDto))
                 .build();
 
@@ -195,6 +198,7 @@ class MemberControllerTest {
                         fieldWithPath("name").description("member's name"),
                         fieldWithPath("password").description("password"),
                         fieldWithPath("gender").description("MALE or FEMALE"),
+                        fieldWithPath("phone").description("PHONE").optional(),
                         fieldWithPath("authorities[].authority").description("Authorities = [ADMIN, ORDER, ITEM]")
 
                 ),
@@ -203,6 +207,7 @@ class MemberControllerTest {
                         fieldWithPath("userId").description("USER ID"),
                         fieldWithPath("name").description("NAME"),
                         fieldWithPath("gender").description("GENDER"),
+                        fieldWithPath("phone").description("PHONE"),
                         fieldWithPath("authorities[].id").ignored(),
                         fieldWithPath("authorities[].authority").description("AUTHORITY")
                 )

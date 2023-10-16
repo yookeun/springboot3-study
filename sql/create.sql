@@ -12,6 +12,7 @@ CREATE TABLE `MEMBER` (
                           `PASSWORD` varchar(100) NOT NULL,
                           `GENDER`varchar(20) NOT NULL,
                           `NAME` varchar(20)  NOT NULL,
+                          `PHONE` varchar(255) NULL,
                           `CREATE_DATE` datetime DEFAULT NULL,
                           `UPDATE_DATE` datetime DEFAULT NULL,
                           PRIMARY KEY (`MEMBER_ID`),
@@ -41,6 +42,7 @@ CREATE TABLE `ITEM` (
                         `CREATE_DATE` datetime DEFAULT NULL,
                         `UPDATE_DATE` datetime DEFAULT NULL,
                         `USED_COUNT` int DEFAULT 0,
+                        `IS_USED` boolean DEFAULT true,
                         PRIMARY KEY (`ITEM_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

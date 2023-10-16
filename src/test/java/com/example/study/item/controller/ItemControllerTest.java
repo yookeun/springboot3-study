@@ -108,7 +108,7 @@ class ItemControllerTest {
                                 parameterWithName("page").description("Page number").optional(),
                                 parameterWithName("size").description("Page limit size").optional(),
                                 parameterWithName("searchName").description("ITEM NAME"),
-                                parameterWithName("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES\"")
+                                parameterWithName("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES)")
                         ),
                 responseFields(PageDescriptor.responseDescriptor)
                         .and(fieldWithPath("content").description("CONTENT"))
@@ -116,7 +116,8 @@ class ItemControllerTest {
                                 fieldWithPath("id").description("ID"),
                                 fieldWithPath("itemName").description("ITEM NAME"),
                                 fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                                fieldWithPath("price").description("ITEM PRICE")
+                                fieldWithPath("price").description("ITEM PRICE"),
+                                fieldWithPath("isUsed").description("IS USED (Y OR N)")
                         )
         ));
 
@@ -153,13 +154,15 @@ class ItemControllerTest {
                 requestFields(
                         fieldWithPath("itemName").description("ITEM NAME"),
                         fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                        fieldWithPath("price").description("ITEM PRICE")
+                        fieldWithPath("price").description("ITEM PRICE"),
+                        fieldWithPath("isUsed").description("IS USED (Y OR N)")
                 ),
                 responseFields(
                         fieldWithPath("id").description("ID"),
                         fieldWithPath("itemName").description("ITEM NAME"),
                         fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                        fieldWithPath("price").description("ITEM PRICE")
+                        fieldWithPath("price").description("ITEM PRICE"),
+                        fieldWithPath("isUsed").description("IS USED (Y OR N)")
                 )
         ));
 
@@ -191,7 +194,8 @@ class ItemControllerTest {
                         fieldWithPath("id").description("ID"),
                         fieldWithPath("itemName").description("ITEM NAME"),
                         fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                        fieldWithPath("price").description("ITEM PRICE")
+                        fieldWithPath("price").description("ITEM PRICE"),
+                        fieldWithPath("isUsed").description("IS USED (Y OR N)")
                 )
         ));
 
@@ -229,13 +233,15 @@ class ItemControllerTest {
                 requestFields(
                         fieldWithPath("itemName").description("ITEM NAME"),
                         fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                        fieldWithPath("price").description("ITEM PRICE")
+                        fieldWithPath("price").description("ITEM PRICE"),
+                        fieldWithPath("isUsed").description("IS USED (Y OR N)")
                 ),
                 responseFields(
                         fieldWithPath("id").description("ID"),
                         fieldWithPath("itemName").description("ITEM NAME"),
                         fieldWithPath("itemType").description("ITEM TYPE(FOOD, BOOK, CLOTHES"),
-                        fieldWithPath("price").description("ITEM PRICE")
+                        fieldWithPath("price").description("ITEM PRICE"),
+                        fieldWithPath("isUsed").description("IS USED (Y OR N)")
                 )
         ));
 

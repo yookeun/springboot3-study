@@ -26,6 +26,7 @@ public class MemberDto {
     private String userId;
     private String name;
     private Gender gender;
+    private String phone;
     private List<MemberAuthorityDto> authorities;
 
     public static MemberDto fromEntity(Member member) {
@@ -34,6 +35,7 @@ public class MemberDto {
                 .userId(member.getUserId())
                 .name(member.getName())
                 .gender(member.getGender())
+                .phone(member.getPhone())
                 .authorities(getAuthorities(member))
                 .build();
     }
@@ -66,6 +68,8 @@ public class MemberDto {
         @NotNull(message = "required")
         private Gender gender;
 
+        private String phone;
+
         @Default
         private List<MemberAuthorityRequestDto> authorities = new ArrayList<>();
 
@@ -75,6 +79,7 @@ public class MemberDto {
                     .password(password)
                     .name(name)
                     .gender(gender)
+                    .phone(phone)
                     .build();
         }
     }
@@ -95,6 +100,8 @@ public class MemberDto {
 
         @NotNull(message = "required")
         private Gender gender;
+
+        private String phone;
 
         @Default
         private List<MemberAuthorityRequestDto> authorities = new ArrayList<>();
