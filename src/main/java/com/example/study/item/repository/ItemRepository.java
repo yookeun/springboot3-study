@@ -20,4 +20,5 @@ public interface ItemRepository extends Repository<Item, Long>, ItemRepositoryCu
     """)
     void updateUsedCount(@Param("itemId") Long itemId);
 
+    <T extends Item> void saveAll(Iterable<T> itemsList);
 }

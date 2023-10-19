@@ -5,6 +5,8 @@ import com.example.study.item.dto.ItemDto;
 import com.example.study.item.dto.ItemDto.ItemRequestDto;
 import com.example.study.item.dto.ItemSearchCondition;
 import com.example.study.item.repository.ItemRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +44,14 @@ public class ItemService {
         item.updateItemType(requestDto.getItemType());
         item.updatePrice(requestDto.getPrice());
         return ItemDto.fromEntity(item);
+    }
+
+    @Transactional
+    public List<ItemDto> saveAll(List<ItemRequestDto> itemRequestDtoList) {
+        List<Item> itemList = itemRequestDtoList.stream().map(ItemRequestDto::toEntity)
+                .toList();
+        itemRepository.saveAll(itemList);
+        return itemList.stream().map(ItemDto::fromEntity).collect(Collectors.toList());
     }
 
 }

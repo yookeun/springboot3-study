@@ -5,6 +5,7 @@ import com.example.study.item.dto.ItemDto.ItemRequestDto;
 import com.example.study.item.dto.ItemSearchCondition;
 import com.example.study.item.service.ItemService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,5 +48,9 @@ public class ItemController {
         return ResponseEntity.ok(itemService.updateItem(id, requestDto));
     }
 
+    @PostMapping("/all")
+    public List<ItemDto> saveAll(@RequestBody List<ItemRequestDto> itemRequestDtoList) {
+        return itemService.saveAll(itemRequestDtoList);
+    }
 }
 

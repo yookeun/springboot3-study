@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,7 @@ public class Item extends BaseEntity {
     private ItemType itemType;
 
     @Column(name = "USED_COUNT")
+    @Default
     private Integer usedCount = 0;
 
     @Column(name = "IS_USED")
