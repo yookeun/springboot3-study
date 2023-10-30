@@ -16,6 +16,7 @@ import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.dto.RefreshTokenDto;
 import com.example.study.member.dto.UserTokenInfo;
 import com.example.study.member.respository.MemberRepository;
+import com.example.study.order.repository.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class MemberService {
     private final JwtTokenHandler jwtTokenHandler;
     private final PasswordEncoder passwordEncoder;
     private final RedisTokenHandler redisTokenHandler;
+    private final OrderRepository orderRepository;
 
     @Transactional
     public MemberDto save(MemberRequestDto requestDto) {
@@ -95,6 +97,14 @@ public class MemberService {
             member.updateAuthorities(requestDto.getAuthorities());
         }
         return MemberDto.fromEntity(member);
+    }
+
+    @Transactional
+    public void deleteMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("This ID does not exist."));
+        memberRepository.delete(member);
+        orderRepository.deleteAllByMemberId(member.getId());
     }
 
     public Page<MemberOrderDto> getAllMemberAndOrderCount(MemberSearchCondition condition, Pageable pageable) {
