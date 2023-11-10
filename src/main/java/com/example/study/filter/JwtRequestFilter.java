@@ -50,6 +50,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         JwtResult jwtResult = jwtTokenHandler.extractAllClaims(token);
+
+        if (jwtResult == null)  {
+            ErrorResponse.exceptionCall(HttpStatus.BAD_REQUEST, response, JwtResultType.UNUSUAL_REQUEST.name());
+            return;
+        }
+
         if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_EXPIRED) {
             ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response, JwtResultType.TOKEN_EXPIRED.name());
             return;
