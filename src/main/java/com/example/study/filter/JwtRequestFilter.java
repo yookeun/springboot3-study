@@ -30,8 +30,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final UserDetailService  userDetailService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/member", "/docs"};
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String[] excludePath = {"/favicon", "/member", "/docs"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
@@ -39,7 +39,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-
         final String authorizationHeader = request.getHeader("Authorization");
         String username;
         String token = null;
