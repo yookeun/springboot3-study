@@ -21,18 +21,8 @@ public class ErrorResponse {
     private Integer code;
     private String msg;
 
-    public static void exceptionCall(HttpStatus httpStatus, HttpServletResponse response) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setStatus(httpStatus.value());
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("application/json");
-        response.getWriter().write(objectMapper.writeValueAsString(ErrorResponse.builder()
-                .code(httpStatus.value())
-                .msg(httpStatus.name())
-                .build()));
-    }
 
-    public static void exceptionCall(HttpStatus httpStatus, HttpServletResponse response, String msg) throws IOException {
+    public static void exceptionCall(HttpStatus httpStatus, String msg, HttpServletResponse response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setStatus(httpStatus.value());
         response.setCharacterEncoding("utf-8");

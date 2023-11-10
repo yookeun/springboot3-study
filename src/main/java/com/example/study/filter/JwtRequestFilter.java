@@ -52,23 +52,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         JwtResult jwtResult = jwtTokenHandler.extractAllClaims(token);
 
         if (jwtResult == null)  {
-            ErrorResponse.exceptionCall(HttpStatus.BAD_REQUEST, response, JwtResultType.UNUSUAL_REQUEST.name());
+            ErrorResponse.exceptionCall(HttpStatus.BAD_REQUEST, JwtResultType.UNUSUAL_REQUEST.name(), response);
             return;
         }
 
         if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_EXPIRED) {
-            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response, JwtResultType.TOKEN_EXPIRED.name());
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, JwtResultType.TOKEN_EXPIRED.name(), response);
             return;
         }
         if (jwtResult.getJwtResultType() == JwtResultType.TOKEN_INVALID) {
-            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response, JwtResultType.TOKEN_INVALID.name());
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, JwtResultType.TOKEN_INVALID.name(), response);
             return;
         }
 
         username = jwtResult.getClaims().get("username").toString();
 
         if (username == null) {
-            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response);
+            ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.name(), response);
             return;
         }
 

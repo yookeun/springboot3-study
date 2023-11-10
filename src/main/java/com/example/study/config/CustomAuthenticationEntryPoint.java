@@ -1,7 +1,6 @@
 package com.example.study.config;
 
 import com.example.study.exception.ErrorResponse;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,8 +12,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
-        ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, response);
+            AuthenticationException authException) throws IOException {
+        ErrorResponse.exceptionCall(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.name(), response);
     }
 
 }
