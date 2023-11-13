@@ -46,7 +46,7 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             throw new IllegalArgumentException("This userId is already in use.");
         }
-        
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         Member saveMember = memberRepository.save(requestDto.toEntity());
         saveMember.addAuthorities(requestDto.getAuthorities());
         return MemberDto.fromEntity(saveMember);
