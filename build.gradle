@@ -63,22 +63,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
-def generated = 'src/main/generated'
+
+def querydslDir = "$buildDir/generated/querydsl"
 
 // Specify where to generate the querydsl QClass file
 tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
 
 // Add the querydsl QClass location to the java source set
 sourceSets {
-	main.java.srcDirs += [ generated ]
+	main.java.srcDirs += [ querydslDir ]
 }
 
-// Deleting the QClass directory on gradle clean
-clean {
-	delete file(generated)
-}
 
 //rest docs
 ext {
