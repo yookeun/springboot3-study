@@ -3,12 +3,12 @@ package com.example.study.member.respository;
 import static com.example.study.member.domain.QMember.member;
 import static com.example.study.order.domain.QOrder.order;
 
-
 import com.example.study.member.domain.Member;
 import com.example.study.member.dto.MemberOrderDto;
 import com.example.study.member.dto.MemberSearchCondition;
 import com.example.study.member.dto.QMemberOrderDto;
 import com.example.study.member.enums.Gender;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -30,10 +30,14 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     @Override
     public Page<Member> getAllMembers(MemberSearchCondition condition, Pageable pageable) {
 
-        Predicate[] where = {
-                containsSearchName(condition.getSearchName()),
-                eqIsGender(condition.getGender())
-        };
+//        Predicate[] where = {
+//                containsSearchName(condition.getSearchName()),
+//                eqIsGender(condition.getGender())
+//        };
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(containsSearchName(condition.getSearchName()))
+                .and(eqIsGender(condition.getGender()));
 
         List<Member> result = queryFactory
                 .select(member)
@@ -61,18 +65,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         };
 
         List<MemberOrderDto> result = queryFactory.select(
-                    new QMemberOrderDto(
-                            member.id.as("memberId"),
-                            member.name.as("memberName"),
-                            ExpressionUtils.as(
-                                    JPAExpressions
-                                            .select(order.count())
-                                            .from(order)
-                                            .where(
-                                                    order.member.eq(member)
-                                            ),"orderCount"
-                            )
-                    )
+                        new QMemberOrderDto(
+                                member.id.as("memberId"),
+                                member.name.as("memberName"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(order.count())
+                                                .from(order)
+                                                .where(
+                                                        order.member.eq(member)
+                                                ),"orderCount"
+                                )
+                        )
                 )
                 .from(member)
                 .where(where)
@@ -97,3 +101,5 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return gender == null ? null : member.gender.eq(gender);
     }
 }
+
+
